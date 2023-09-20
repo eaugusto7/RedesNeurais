@@ -1,4 +1,4 @@
-#Function AND 'n OR using Perceptron
+#Function XOR using Perceptron
 
 #Import Library
 import numpy as np
