@@ -1,62 +1,75 @@
-import numpy as np
-import random
-import matplotlib.pyplot as plt 
+# Import libraries
+import numpy as np  # NumPy for numerical operations
+import random  # Random for generating random numbers
+import matplotlib.pyplot as plt  # Matplotlib for plotting graphs
 
-#Define Function Perceptron with return y_output
-def yPerceptron(Weight, bias, X_inputs): #Array of Attributes | Weight | Bias
-    u_value_activation = np.dot(Weight,X_inputs) + bias #Calcule Threshold
-    y_output = [] #Initializing y_output as empty
+# Define a function 'yPerceptron' that returns the Perceptron output
+def yPerceptron(Weight, bias, X_inputs):  # Weight: Array of attributes weights, bias: Weight for bias, X_inputs: Input attributes
+    u_value_activation = np.dot(Weight, X_inputs) + bias  # Calculate the weighted sum (activation)
+    y_output = []  # Initialize the output list
 
-    for n in u_value_activation: #Using For Each to 
-        if(n >= 0): #Check if u value is bigger than 0
-            y_output.append(1) #Add value 1 in array y_output
+    for n in u_value_activation:  # Loop through each activation value
+        if n >= 0:  # If the activation is greater than or equal to 0
+            y_output.append(1)  # Append 1 to the output list
         else:
-            y_output.append(0) #Add value 1 in array y_output
-    return np.array(y_output) #Return array y_output
+            y_output.append(0)  # Otherwise, append 0 to the output list
+    return np.array(y_output)  # Return the output as a NumPy array
 
-#Function Training Perceptron
+# Define another function 'yPerceptron_final' that returns the Perceptron output
+def yPerceptron_final(Weight, bias, X_inputs):  # Weight: Array of attributes weights, bias: Weight for bias, X_inputs: Input attributes
+    u_value_activation = np.dot(Weight, X_inputs) + bias  # Calculate the weighted sum (activation)
+    y_output = []  # Initialize the output list
+
+    for n in u_value_activation[0]:  # Loop through each activation value (assuming single output)
+        if n >= 0:  # If the activation is greater than or equal to 0
+            y_output.append(1)  # Append 1 to the output list
+        else:
+            y_output.append(0)  # Otherwise, append 0 to the output list
+    return np.array(y_output)  # Return the output as a NumPy array
+
+# Define a function 'treina_perceptron' for training the Perceptron
 def treina_perceptron(W, b, X, yd, alfa, maxEpocas, tol):
-    N = X.shape[1]  # Número de amostras de entrada
+    N = X.shape[1]  # Number of input samples
     SEQ = tol
-    VetorSEQ = []  # Lista para armazenar o somatório dos erros quadráticos a cada época
+    VetorSEQ = []  # List to store the sum of squared errors for each epoch
 
     Epoca = 1
-    while (Epoca <= maxEpocas) and (SEQ >= tol):
-        SEQ = 0  # Inicializa o somatório dos erros quadráticos para a época atual
+    while (Epoca <= maxEpocas) and (SEQ >= tol):  # Continue training until maxEpocas or tolerance reached
+        SEQ = 0  # Initialize the sum of squared errors for the current epoch
         
-        for i in range(0,N):
-            yi = yPerceptron(W,b,X[:,i])
-            erroi = yd[0,i] - yi  # Determina o erro para a amostra i
+        for i in range(0, N):  # Loop through each input sample
+            yi = yPerceptron(W, b, X[:, i])  # Calculate the Perceptron output for the sample
+            erroi = yd[0, i] - yi  # Determine the error for the sample
 
-            # Atualiza os pesos e o bias
-            W = W + alfa * erroi * X[:,i].T
+            # Update the weights and bias using the delta rule
+            W = W + alfa * erroi * X[:, i].T
             b = b + alfa * erroi
-            SEQ += erroi**2  # Acumula o somatório dos erros quadráticos
-        VetorSEQ.append(SEQ[0])  # Armazena o somatório dos erros quadráticos da época atual
+            SEQ += erroi**2  # Accumulate the sum of squared errors
+        VetorSEQ.append(SEQ[0])  # Store the sum of squared errors for the current epoch
         Epoca += 1
     return W, b, VetorSEQ
-    
 
-#Cria e treina um Perceptron para porta lógica AND de duas entradas
-X = np.array([[0,1,0,1], [0,0,1,1]])
-yd = np.array([[0.,0.,0.,1.]])
-alfa = 1.2
-maxEpocas = 10
-tol = 0.001
-W = np.array(np.random.rand(1,2))*2 - 1
-b = random.uniform(-1, 1)
-W, b, vetor_seq = treina_perceptron(W, b, X, yd, alfa, maxEpocas, tol)
+# Create input data and train a Perceptron for the logical AND n OR operation with two inputs
+X = np.array([[0, 1, 0, 1], [0, 0, 1, 1]])  # Input data
+yd_AND = np.array([[0., 0., 0., 1.]])  # Desired outputs for OR operation
+yd_OR = np.array([[0., 1., 1., 1.]])  # Desired outputs for OR operation
+alfa = 1.2  # Learning rate
+maxEpocas = 10  # Maximum number of training epochs
+tol = 0.001  # Tolerance for stopping training
+W = np.array(np.random.rand(1, 2)) * 2 - 1  # Initialize weights randomly
+b = random.uniform(-1, 1)  # Initialize bias randomly
+W, b, vetor_seq = treina_perceptron(W, b, X, yd_AND, alfa, maxEpocas, tol)  # Train the Perceptron
 
-#Plota SEQ
+print(W)
+
+# Plot the sum of squared errors (SEQ)
 print("Vetor seq:", vetor_seq)
 plt.plot(vetor_seq, 'b-')
 plt.xlabel('Epoca')
 plt.ylabel('SEQ')
-plt.title('Somatório dos Erros Quadráticos')
+plt.title('Sum of Squared Errors')
 plt.show()
 
-y = yPerceptron(W,b,X)
+# Use the trained Perceptron to make predictions
+y = yPerceptron_final(W, b, X)
 print(y)
-
-
-
