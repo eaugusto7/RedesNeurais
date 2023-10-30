@@ -106,7 +106,6 @@ maxEpocas = 100  # Maximum number of training epochs
 tol = 0.001  # Tolerance for stopping training
 W = np.array(np.random.rand(1, X.shape[1])) * 2 - 1  # Initialize weights randomly
 b = random.uniform(-1, 1)  # Initialize bias randomly
-
 W, b, vetor_seq = treina_perceptron(W, b, X, Yd, alfa, maxEpocas, tol)  # Train the Perceptron
 
 # Use the trained Perceptron to make predictions
