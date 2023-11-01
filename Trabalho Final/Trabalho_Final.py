@@ -95,12 +95,12 @@ def generate_training_data(num_samples):
 # Crie a arquitetura da rede neural
 model = tf.keras.Sequential([
     tf.keras.layers.Dense(276, activation='tanh', input_shape=(12,)),
-    tf.keras.layers.Dropout(0.9),
+    tf.keras.layers.Dropout(0.95),
     tf.keras.layers.Dense(3)  
 ])
 
 custom_optimizer = tf.keras.optimizers.Adam(learning_rate=0.0001)
-sgd_with_momentum = tf.keras.optimizers.SGD(learning_rate=0.0001, momentum=0.9)
+sgd_with_momentum = tf.keras.optimizers.SGD(learning_rate=0.005, momentum=0.1)
 rmsprop_optimizer = tf.keras.optimizers.RMSprop(learning_rate=0.001, rho=0.9)
 sgd_optimizer = tf.keras.optimizers.SGD(learning_rate=0.01)
 # Compile o modelo
@@ -108,8 +108,8 @@ model.compile(optimizer=sgd_with_momentum, loss='mean_squared_error')
 
 # Gere dados de treinamento fictícios
 train_data, labels = generate_training_data(num_samples=500)
-scaler = StandardScaler()
-train_data = scaler.fit_transform(train_data)
+#scaler = StandardScaler()
+#train_data = scaler.fit_transform(train_data)
 
 # Treine o modelo
 model.fit(train_data, labels, epochs=20000)
