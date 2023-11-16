@@ -58,6 +58,8 @@ def treina_adaline_momentum(W, b, X, yd, alfa, maxEpocas, tol, beta):
             W = W_Atual + alfa * erroi * X_input.T + beta*(W_Atual - W_Antigo)
             b = b + alfa * erroi + beta*(b_atual - b_antigo)
 
+            print(W)
+
             W_Antigo = W_Atual
             b_antigo = b_atual
             W_Atual = W
@@ -130,11 +132,11 @@ num_amostras = 200
 X, Yd = geraData(num_amostras)
 
 alfa = 0.00001
-maxEpocas = 50
+maxEpocas = 10
 tol = 0.001
 W = np.random.rand(1, X.shape[1]) * 2 - 1
 b = random.uniform(-1, 1)
-beta = 0.1
+beta = 0.01
 
 W_gerado = W
 b_gerado = b

@@ -1,4 +1,5 @@
 import tensorflow as tf
+import random  # Random para gerar números aleatórios
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 
@@ -73,6 +74,10 @@ def generate_training_data(num_samples):
 
     in_atitude_values = InProfile[2].strip().split(";")
     in_atitude_values = list(map(float, in_atitude_values))
+
+    data = list(zip(fx_values,fy_values,fz_values, wx_values,wy_values,wz_values,pos_x_gnss_values,pos_y_gnss_values,pos_z_gnss_values,vel_x_gnss_values,vel_y_gnss_values,vel_z_gnss_values,in_latitude_values,in_longitude_values,in_atitude_values))
+    random.shuffle(data)
+    fx_values, fy_values, fz_values, wx_values, wy_values, wz_values, pos_x_gnss_values, pos_y_gnss_values, pos_z_gnss_values, vel_x_gnss_values, vel_y_gnss_values, vel_z_gnss_values, in_latitude_values,in_longitude_values,in_atitude_values = zip(*data)
 
     for i in range(num_samples):
         # Gere dados fictícios de acelerômetro, giroscópio, posição e velocidade do GNSS
